@@ -4,9 +4,23 @@ const grid = 15;
 const paddleHeight = grid * 5;
 const maxPaddleY = canvas.height - grid - paddleHeight;
 
+// DOM - Document Object Model
+
+const leftCounter = document.querySelector("#leftCounter");
+const rightCounter = document.querySelector("#rightCounter");
+// document.querySelector()
+// console.log(leftCounter.textContent);
+
+leftCounter.textContent = 0;
+rightCounter.textContent = 0;
+
 
 let ballSpeed = 5;
 let paddleSpeed = 6;
+let rightScore = 0;
+let leftScore = 0;
+
+
 
 const leftPaddle = {
     x: grid*2,
@@ -42,12 +56,11 @@ function collideWalls(paddle){ //doesn't let the ball leave the boundaries of th
     else if (paddle.y > maxPaddleY){
         paddle.y = maxPaddleY;
     }
-
 }
 
 function isCollides(object1, object2){
     return object1.x < object2.x + object2.width 
-    && object1.x + object1.wdith > object2.x
+    && object1.x + object1.width > object2.x
     && object1.y < object2.y + object2.height 
     && object1.y + object1.height > object2.y;
 }
@@ -55,6 +68,12 @@ function isCollides(object1, object2){
 function resetGame(){
     if ((ball.x < 0 || ball.x > canvas.width) && !ball.isResetted){
         ball.isResetted = true;
+        if (ball.x < 0){
+            leftCounter.textContent = 0;
+        }
+        else if (ball.x > canvas.width){
+            rightCounter.textContent = 0;
+        }
         setTimeout(function(){
             ball.x = canvas.width/2,
             ball.y = canvas.height/2,
@@ -94,12 +113,16 @@ function loop(){
     if (isCollides(ball, rightPaddle)){
         ball.dx = -ball.dx;
         ball.x = rightPaddle.x - ball.width;
-        console.log('Ball has collided');
+        rightScore = Number(rightCounter.textContent);
+        rightScore += 1;
+        rightCounter.textContent = rightScore;
     }
     else if (isCollides(ball, leftPaddle)){
         ball.dx = -ball.dx;
         ball.x = leftPaddle.x + leftPaddle.width;
-        console.log('Ball has collided');
+        leftScore = Number(leftCounter.textContent);
+        leftScore += 1;
+        leftCounter.textContent = leftScore;
     }
 
 
@@ -110,36 +133,35 @@ function loop(){
     for (let i = grid; i < canvas.height - grid; i += grid * 2){
         context.fillRect(canvas.width/2, i, grid, grid); //Net Line
     }
-
-    document.addEventListener('keydown', function (event){
-        if (event.key === 'w'){
-            leftPaddle.dy = -paddleSpeed;
-        }
-        else if (event.key === 's'){
-            leftPaddle.dy = paddleSpeed;
-        }
-    });
-    document.addEventListener('keyup', function (event) {
-        if (event.key === 'w' || event.key === 's'){
-            leftPaddle.dy = 0;
-        }
-    })
-
-    document.addEventListener('keydown', function (event){
-        if (event.key === 'ArrowUp'){
-            rightPaddle.dy = -paddleSpeed;
-        }
-        else if (event.key === 'ArrowDown'){
-        rightPaddle.dy = paddleSpeed;
-        }
-    });
-    document.addEventListener('keyup', function (event) {
-        if (event.key === 'ArrowUp' || event.key === 'ArrowDown'){
-            rightPaddle.dy = 0;
-        }
-    })
 }
 
 requestAnimationFrame(loop);
 
+document.addEventListener('keydown', function (event){
+    if (event.key === 'w'){
+        leftPaddle.dy = -paddleSpeed;
+    }
+    else if (event.key === 's'){
+        leftPaddle.dy = paddleSpeed;
+    }
+});
+document.addEventListener('keyup', function (event) {
+    if (event.key === 'w' || event.key === 's'){
+        leftPaddle.dy = 0;
+    }
+})
+
+document.addEventListener('keydown', function (event){
+    if (event.key === 'ArrowUp'){
+        rightPaddle.dy = -paddleSpeed;
+    }
+    else if (event.key === 'ArrowDown'){
+    rightPaddle.dy = paddleSpeed;
+    }
+});
+document.addEventListener('keyup', function (event) {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown'){
+        rightPaddle.dy = 0;
+    }
+})
 //function isCollides (obj1, obj2)

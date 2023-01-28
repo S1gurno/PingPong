@@ -2,6 +2,7 @@ body,html{
     width: 100%;
     height: 100%;
     margin: 0;
+    
 
 }
 body{
@@ -9,4 +10,29 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
+.score{
+    width: 300px;
+    border: rgb(228, 164, 87) solid 3px;
+    display: flex;
+    margin-top: 20px;
+}
+.left_score{
+    width: 165px;
+    /* border-right: rgb(228, 164, 87) dashed 7px; */
+    justify-content: left;
+    color: white;
+
+}
+.right_score{
+    width: 150px;
+    border-left: rgb(228, 164, 87) dashed 15px;
+    justify-content: right;
+    color: white;
+}
+.number{
+    color: rgb(228, 164, 87);
+    text-align: center;
+}
+
